@@ -1,6 +1,9 @@
 package com.senla.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -14,9 +17,14 @@ public class Weather {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private Integer id;
     private int place;
+    @JsonProperty("condition")
+    @Transient
+    private JsonNode JsonNode;
     @Column(name = "temp_c")
+    @JsonProperty("temp_c")
     private double tempC;
     @Column(name = "wind_mph")
     private double windMph;
@@ -24,6 +32,7 @@ public class Weather {
     private double pressureMb;
     private double humidity;
     @Column(name = "condition_text")
+    @JsonIgnore
     private String condition;
     @Column(name = "location_name")
     private String locationName;
@@ -124,5 +133,13 @@ public class Weather {
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
+    }
+
+    public com.fasterxml.jackson.databind.JsonNode getJsonNode() {
+        return JsonNode;
+    }
+
+    public void setJsonNode(com.fasterxml.jackson.databind.JsonNode jsonNode) {
+        JsonNode = jsonNode;
     }
 }

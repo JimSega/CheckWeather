@@ -54,8 +54,12 @@ public class AppApplication {
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			try {
-				JsonFrom jsonFrom = objectMapper.readValue(response, JsonFrom.class);
+				JsonFromResponse jsonFrom = objectMapper.readValue(response, JsonFromResponse.class);
 				System.out.println(jsonFrom);
+				Weather weather = objectMapper.readValue(jsonFrom.getCurrent().toJSONString(), Weather.class);
+				System.out.println(weather.getTempC());
+
+
 			} catch (JsonProcessingException e) {
 				throw new RuntimeException(e);
 			}

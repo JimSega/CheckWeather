@@ -1,16 +1,14 @@
 package com.senla.app;
 
 import org.json.simple.JSONObject;
-import org.springframework.stereotype.Component;
 
-@Component
-public class JsonFrom {
+public class JsonFromResponse {
     private JSONObject location;
 
-    public JsonFrom() {
+    public JsonFromResponse() {
     }
 
-    public JsonFrom(JSONObject location, JSONObject current) {
+    public JsonFromResponse(JSONObject location, JSONObject current) {
         this.location = location;
         this.current = current;
     }
