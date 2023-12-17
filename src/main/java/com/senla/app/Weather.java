@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,7 +14,6 @@ import java.time.LocalTime;
 public class Weather {
     public Weather() {
     }
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
@@ -37,6 +37,7 @@ public class Weather {
     @JsonIgnore
     private String condition;
     @Column(name = "location_name")
+    @JsonIgnore
     private String locationName;
     @JsonIgnore
     @Column(name = "date_check")
