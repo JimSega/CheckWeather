@@ -9,7 +9,7 @@ public class RestController {
         this.repository = repository;
     }
     @GetMapping("/weather")
-    public synchronized String checkWeather() {
+    public String checkWeather() {
         return repository.findLastRecord().toString();
     }
 }
