@@ -1,5 +1,6 @@
 package com.senla.app;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
@@ -10,6 +11,8 @@ public interface CrudRepository<Weather, Integer> extends Repository<Weather, In
     <S extends Weather> S save(S entity);
     <S extends Weather> Iterable<S> saveAll(Iterable<S> entities);
     Optional<Weather> findById(Integer id);
+    @Query("FROM Weather ORDER BY id DESC LIMIT 1")
+    Weather findLastRecord();
     boolean existsById(Integer id);
     Iterable<Weather> findAll();
     Iterable<Weather> findAllById(Iterable<Integer> ids);
