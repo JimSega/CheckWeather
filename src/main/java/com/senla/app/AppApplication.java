@@ -1,20 +1,15 @@
 package com.senla.app;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Map;
-
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @SpringBootApplication
 public class AppApplication {
@@ -24,69 +19,38 @@ public class AppApplication {
 	}
 
 	@Component
-	public class Runner implements CommandLineRunner {
+	public static class Runner implements CommandLineRunner {
 		private final WeatherRepository repository;
+		private final HttpWebClient httpWebClient;
 
-		public Runner(WeatherRepository repository) {
+		public Runner(WeatherRepository repository, HttpWebClient httpWebClient) {
 			this.repository = repository;
+			this.httpWebClient = httpWebClient;
 		}
 
 		@Override
 		public void run(String... args) {
-			doWeHaveSomethingInDb();
-			WebClient webClient = WebClient.create();
-			String response = webClient.get()
-					.uri("https://weatherapi-com.p.rapidapi.com/current.json?q=Minsk")
-					.header("X-RapidAPI-Key", "1be3350cf0msh8d651554b7157c7p172623jsnbae0397cb54a")
-					.header("X-RapidAPI-Host", "weatherapi-com.p.rapidapi.com")
-					.retrieve()
-					.bodyToMono(String.class)
-					.block();
-			String responseJson;
-			try {
-				Object object = new ObjectMapper().readValue(response, Object.class);
-				responseJson = new ObjectMapper().writerWithDefaultPrettyPrinter()
-						.writeValueAsString(object);
-				System.out.println(responseJson);
-			} catch (JsonProcessingException e) {
-				throw new RuntimeException(e);
-			}
+			String response = httpWebClient.getResponse();
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			try {
-				JsonFromResponse jsonFrom = objectMapper.readValue(response, JsonFromResponse.class);
-				System.out.println(jsonFrom);
+				JsonFromResponseWeather jsonFrom = objectMapper.readValue(response, JsonFromResponseWeather.class);
 				Weather weather = objectMapper.readValue(jsonFrom.getCurrent().toJSONString(), Weather.class);
-				System.out.println(weather.getTempC());
+				weather.setLocalDate(LocalDate.now());
+				weather.setLocalTime(LocalTime.now());
+				weather.setPlace(1);
+				weather.setLocationName("Minsk");
+				weather.setCondition(httpWebClient.getConditionText(response));
+				System.out.println(weather);
+				repository.save(weather);
 
 
 			} catch (JsonProcessingException e) {
 				throw new RuntimeException(e);
 			}
-			try {
-				Map<String, Object> weatherMap = objectMapper.readValue(response, new TypeReference<>() {
-                });
-				System.out.println(weatherMap.get("location"));
-				try {
-					JSONObject object = (JSONObject) new JSONParser().parse(response);
-					System.out.println(object.get("location"));
-				} catch (ParseException e) {
-					throw new RuntimeException(e);
-				}
 
-			} catch (JsonProcessingException e) {
-				throw new RuntimeException(e);
-			}
-			System.exit(0);
+			//System.exit(0);
 
-		}
-		private void doWeHaveSomethingInDb() {
-			long count = repository.count();
-			if (count > 0) {
-				System.out.printf("Db has %d weather(s)%n", count);
-			} else {
-				System.out.println("Db is empty");
-			}
 		}
 	}
 

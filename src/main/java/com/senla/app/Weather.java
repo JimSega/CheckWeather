@@ -2,7 +2,6 @@ package com.senla.app;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 
@@ -16,19 +15,22 @@ public class Weather {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonIgnore
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+    @JsonIgnore
     private int place;
     @JsonProperty("condition")
     @Transient
+    @JsonIgnore
     private JsonNode JsonNode;
     @Column(name = "temp_c")
     @JsonProperty("temp_c")
     private double tempC;
     @Column(name = "wind_mph")
+    @JsonProperty("wind_mph")
     private double windMph;
     @Column(name = "pressure_mb")
+    @JsonProperty("pressure_mb")
     private double pressureMb;
     private double humidity;
     @Column(name = "condition_text")
@@ -36,8 +38,10 @@ public class Weather {
     private String condition;
     @Column(name = "location_name")
     private String locationName;
+    @JsonIgnore
     @Column(name = "date_check")
     private LocalDate localDate;
+    @JsonIgnore
     @Column(name = "time_check")
     private LocalTime localTime;
 
@@ -141,5 +145,10 @@ public class Weather {
 
     public void setJsonNode(com.fasterxml.jackson.databind.JsonNode jsonNode) {
         JsonNode = jsonNode;
+    }
+    public String toString() {
+        return ("temp_c: " + tempC + "\nwind_mph: " + windMph + "\npressureMb: " + pressureMb + "\nhumidity: " + humidity +
+        "\nid: " + id + "\nlocation: " + locationName + "\ntime: " + localTime + "\ndate: " + localDate
+        + "\ncondition_text: " + condition);
     }
 }

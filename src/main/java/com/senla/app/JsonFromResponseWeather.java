@@ -2,13 +2,13 @@ package com.senla.app;
 
 import org.json.simple.JSONObject;
 
-public class JsonFromResponse {
+public class JsonFromResponseWeather {
     private JSONObject location;
 
-    public JsonFromResponse() {
+    public JsonFromResponseWeather() {
     }
 
-    public JsonFromResponse(JSONObject location, JSONObject current) {
+    public JsonFromResponseWeather(JSONObject location, JSONObject current) {
         this.location = location;
         this.current = current;
     }
