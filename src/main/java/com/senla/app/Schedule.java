@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 @EnableScheduling
 @Component
@@ -36,7 +37,7 @@ public class Schedule {
             JsonFromResponseWeather jsonFrom = objectMapper.readValue(response, JsonFromResponseWeather.class);
             Weather weather = objectMapper.readValue(jsonFrom.getCurrent().toJSONString(), Weather.class);
             weather.setLocalDate(LocalDate.now());
-            weather.setLocalTime(LocalTime.now());
+            weather.setLocalTime(LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
             weather.setPlace(placeId);
             weather.setLocationName(locationName);
             weather.setCondition(httpWebClient.getConditionText(response));
