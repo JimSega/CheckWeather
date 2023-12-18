@@ -148,8 +148,8 @@ public class Weather {
         JsonNode = jsonNode;
     }
     public String toString() {
-        return ("temp_c: " + tempC + "\nwind_mph: " + windMph + "\npressureMb: " + pressureMb + "\nhumidity: " + humidity +
-        "\nid: " + id + "\nlocation: " + locationName + "\ntime: " + localTime + "\ndate: " + localDate
-        + "\ncondition_text: " + condition);
+        return ("temp_c: " + tempC + "\nwind_mph: " + windMph + "\npressureMb: " + pressureMb + "\nhumidity: " +
+                humidity + "\nlocation: " + locationName + "\ntime: " + localTime + "\ndate: " + localDate +
+                "\ncondition_text: " + condition);
     }
 }
