@@ -14,12 +14,22 @@ public class RestController {
     }
     @GetMapping("/weather")
     public String checkWeather() {
-        return repository.findLastRecord().toString();
+        if (repository.findLastRecord().isPresent()) {
+            return repository.findLastRecord().get().toString();
+        }
+        throw new NullPointerException();
     }
 
     @PostMapping("/average")
     public Map<String, Double> checkAverage(@RequestBody BodyRequestAverage bodyRequestAverage) {
-        return Map.of("average_temp", repository.findAverageTemp(bodyRequestAverage.from(), bodyRequestAverage.to()));
+        if(bodyRequestAverage.from().isBefore(bodyRequestAverage.to()) ||
+        bodyRequestAverage.from().isEqual(bodyRequestAverage.to())) {
+            if(repository.findAverageTemp(bodyRequestAverage.from(), bodyRequestAverage.to()).isPresent()) {
+                return Map.of("average_temp",
+                        repository.findAverageTemp(bodyRequestAverage.from(), bodyRequestAverage.to()).get());
+            } else throw new NullPointerException();
 
+        }
+        throw new DateException("Wrong date!");
     }
 }

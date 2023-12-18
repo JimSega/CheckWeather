@@ -14,9 +14,9 @@ public interface CrudRepository<Weather, Integer> extends Repository<Weather, In
     <S extends Weather> Iterable<S> saveAll(Iterable<S> entities);
     Optional<Weather> findById(Integer id);
     @Query("FROM Weather ORDER BY id DESC LIMIT 1")
-    Weather findLastRecord();
+    Optional<Weather> findLastRecord();
     @Query("SELECT AVG(tempC) FROM Weather WHERE localDate BETWEEN ?1 AND ?2")
-    Double findAverageTemp(LocalDate dateFrom, LocalDate dateTo);
+    Optional<Double> findAverageTemp(LocalDate dateFrom, LocalDate dateTo);
     boolean existsById(Integer id);
     Iterable<Weather> findAll();
     Iterable<Weather> findAllById(Iterable<Integer> ids);
