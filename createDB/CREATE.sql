@@ -1,6 +1,35 @@
+CREATE DATABASE weather
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+	
+\c weather  
+
+CREATE TABLE IF NOT EXISTS public.place
+(
+    id integer NOT NULL,
+    name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT place_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.place
+    OWNER to postgres;
+
+INSERT INTO public.place(
+	id, name)
+	VALUES (1, 'Minsk');
+INSERT INTO public.place(
+	id, name)
+	VALUES (2, 'London');
+	
 CREATE TABLE IF NOT EXISTS public.archive
 (
-	id integer,
+	id SERIAL,
     place integer,
     date_check date,
     humidity double precision CHECK (humidity >= 0 AND humidity <= 100),
