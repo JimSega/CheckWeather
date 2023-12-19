@@ -54,7 +54,7 @@ class RestControllerTest extends AbstractTest{
                 .contentType(MediaType.APPLICATION_JSON_VALUE).content(super.mapToJson(mapRequest)))
                 .andReturn();
         String response = mvcResult.getResponse().getContentAsString();
-        Assertions.assertTrue(response.contains("Wrong format date!"));
+        Assertions.assertTrue(response.contains(ErrorMessage.WRONG_FORMAT.toString()));
     }
     @Test
     void checkAverageFuture() throws Exception {
@@ -65,7 +65,7 @@ class RestControllerTest extends AbstractTest{
                         .contentType(MediaType.APPLICATION_JSON_VALUE).content(super.mapToJson(mapRequest)))
                 .andReturn();
         String response = mvcResult.getResponse().getContentAsString();
-        Assertions.assertTrue(response.contains("The database does not contain records (records for the required period)"));
+        Assertions.assertTrue(response.contains(ErrorMessage.NOT_CONTAIN_RECORDS.toString()));
     }
 
     @Test
@@ -76,6 +76,6 @@ class RestControllerTest extends AbstractTest{
                         .contentType(MediaType.APPLICATION_JSON_VALUE).content(super.mapToJson(mapRequest)))
                 .andReturn();
         String response = mvcResult.getResponse().getContentAsString();
-        Assertions.assertTrue(response.contains("Wrong  period!"));
+        Assertions.assertTrue(response.contains(ErrorMessage.WRONG_PERIOD.toString()));
     }
 }
