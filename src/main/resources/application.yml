@@ -1,0 +1,39 @@
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+  main:
+    banner-mode: off
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/weather
+    username: postgres
+    password: java
+    driverClassName: org.postgresql.Driver
+place:
+  id: 1
+  locationName: Minsk
+HttpWebClient:
+  header1: 1be3350cf0msh8d651554b7157c7p172623jsnbae0397cb54a
+  header2: weatherapi-com.p.rapidapi.com
+server:
+  port: 8181
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+logging:
+  file:
+    name: mylog.log

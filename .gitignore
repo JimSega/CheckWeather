@@ -4,6 +4,7 @@ build/
 *.yml
 *.log
 !gradle/wrapper/gradle-wrapper.jar
+!**/src/main/resources/application.yml
 !**/src/main/**/build/
 !**/src/test/**/build/
 
